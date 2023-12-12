@@ -86,9 +86,6 @@ export class Api {
             'title': title,
             'body': body,
         }
-        if (published_at) {
-            postData.published_at = published_at;
-        }
         const options : RequestUrlParam = {
             url: BASE_URL + curr_slug + '/',
             method: 'PATCH',
