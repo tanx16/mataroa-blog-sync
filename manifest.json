@@ -1,7 +1,7 @@
 {
 	"id": "mataroa-blog-sync",
 	"name": "Mataroa Sync",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"minAppVersion": "0.15.0",
 	"description": "Enables easy uploads to mataroa.blog.",
 	"author": "tanx",
