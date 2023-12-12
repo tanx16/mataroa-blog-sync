@@ -23,7 +23,7 @@ export default class MataroaPlugin extends Plugin {
 
         this.addRibbonIcon('cloud', 'Upload/update post', async (evt: MouseEvent) => {
             const file = this.app.workspace.getActiveFile();
-            const text = await this.app.vault.read(file);
+            const text = await this.app.vault.read(file!);
             if(!(file && text)) return;
             const filename = file.name.replace('.md', '');
             const getPostResult = await this.api.getPost(filename);
@@ -41,7 +41,7 @@ export default class MataroaPlugin extends Plugin {
             id: 'delete-current-post',
             name: 'Delete post',
             callback: () => {
-                const filename = this.app.workspace.getActiveFile().name.replace('.md', '');
+                const filename = this.app.workspace.getActiveFile()!.name.replace('.md', '');
                 this.api.deletePost(filename);
                 new Notice('Deleted remote post.');
             }
@@ -52,7 +52,7 @@ export default class MataroaPlugin extends Plugin {
             name: 'Publish post',
             // Publishes at current date.
             callback: () => {
-                const filename = this.app.workspace.getActiveFile().name.replace('.md', '');
+                const filename = this.app.workspace.getActiveFile()!.name.replace('.md', '');
                 const publishPostResult = this.api.publishPost(filename);
                 if (!publishPostResult) {
                     new Notice('Ran into error during publishing!');
@@ -66,7 +66,7 @@ export default class MataroaPlugin extends Plugin {
             id: 'pull-remote-post',
             name: 'Overwrite current file with remote post',
             editorCallback: async (editor: Editor, view: MarkdownView) => {
-                const filename = this.app.workspace.getActiveFile().name.replace('.md', '');
+                const filename = this.app.workspace.getActiveFile()!.name.replace('.md', '');
                 const getPostResult = await this.api.getPost(filename);
                 if (!getPostResult) {
                     new Notice('Cannot find remote post!');
