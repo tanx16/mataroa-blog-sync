@@ -11,3 +11,5 @@ It provides most of the functionality in the Mataroa API, including:
 This plugin assumes that there is a 1-1 mapping between your post title and its slug (e.g. https://sample.mataroa.blog/blog/foo-bar should always correspond to a single file named Foo Bar/Foo-Bar/foo-bar etc.).
 
 To use this plugin, you just need a Mataroa blog account and its corresponding API key.
+
+Disclaimer: I am not affiliated with Mataroa or Obsidian. 
