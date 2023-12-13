@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Editor, MarkdownView, Notice, Plugin, PluginSettingTab, Setting, TFile } from 'obsidian';
 
 import  { Api } from './api';
 
@@ -25,7 +25,7 @@ export default class MataroaPlugin extends Plugin {
             const file = this.app.workspace.getActiveFile();
             const text = await this.app.vault.read(file!);
             if(!(file && text)) return;
-            const filename = file.name.replace('.md', '');
+            const filename = this.getCurrentFilename();
             const getPostResult = await this.api.getPost(filename);
             if (getPostResult) {
                 this.api.updatePost(filename, text);
@@ -41,7 +41,7 @@ export default class MataroaPlugin extends Plugin {
             id: 'delete-current-post',
             name: 'Delete post',
             callback: () => {
-                const filename = this.app.workspace.getActiveFile()!.name.replace('.md', '');
+                const filename = this.getCurrentFilename();
                 this.api.deletePost(filename);
                 new Notice('Deleted remote post.');
             }
@@ -52,7 +52,7 @@ export default class MataroaPlugin extends Plugin {
             name: 'Publish post',
             // Publishes at current date.
             callback: () => {
-                const filename = this.app.workspace.getActiveFile()!.name.replace('.md', '');
+                const filename = this.getCurrentFilename();
                 const publishPostResult = this.api.publishPost(filename);
                 if (!publishPostResult) {
                     new Notice('Ran into error during publishing!');
@@ -66,7 +66,7 @@ export default class MataroaPlugin extends Plugin {
             id: 'pull-remote-post',
             name: 'Overwrite current file with remote post',
             editorCallback: async (editor: Editor, view: MarkdownView) => {
-                const filename = this.app.workspace.getActiveFile()!.name.replace('.md', '');
+                const filename = this.getCurrentFilename();
                 const getPostResult = await this.api.getPost(filename);
                 if (!getPostResult) {
                     new Notice('Cannot find remote post!');
@@ -92,6 +92,16 @@ export default class MataroaPlugin extends Plugin {
     async saveSettings() {
         await this.saveData(this.settings);
     }
+
+    private getCurrentFilename() {
+        const file = this.app.workspace.getActiveFile();
+        if (file instanceof TFile) {
+            return file.basename;
+        }
+        new Notice('Could not get filename of current file!');
+        console.log("File was: " + file);
+    }
+
 }
 
 class MataroaSettingsTab extends PluginSettingTab {

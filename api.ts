@@ -9,9 +9,15 @@ export class Api {
     }
 
     private makeSlug(title: string) {
+        if (title == null) {
+            throw new Error('Got unexpected null string as title');
+            return;
+        }
         // Assumes that the slug is the title, but slugified. E.g. Updating blog = updating-blog
-        // This is really hacky, but it's fine as long as we're consistent.
-        return title.toLowerCase().replaceAll(' ', '-');
+        // This is really hacky, but it's fine as long as the user doesn't have 2 very similar
+        // filenames, like "Foo-Bar/Foo-Bar!/Foo Bar!". Ideally, each file should store metadata
+        // for its related post on Mataroa, but that's an improvement for the future.
+        return title.toLowerCase().replaceAll('[^a-zA-Z0-9]', '').replaceAll(' ', '-');
     }
 
     async makeNewPost(title: string, body: string) {
