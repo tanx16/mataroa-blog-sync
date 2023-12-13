@@ -98,8 +98,11 @@ export default class MataroaPlugin extends Plugin {
         if (file instanceof TFile) {
             return file.basename;
         }
-        new Notice('Could not get filename of current file!');
-        console.log("File was: " + file);
+        else {
+            new Notice('Could not get filename of current file!');
+            console.log("File was: " + file);
+            throw new Error('Error getting filename!');
+        }
     }
 
 }
